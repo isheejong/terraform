@@ -1,0 +1,6 @@
+provider "opc" {
+  user            = "yesdajy@hanmail.net"
+  password        = "Manager_1234"
+  identity_domain = "no2017"
+  endpoint        = "https://compute.uscom-central-1.oraclecloud.com/"
+}

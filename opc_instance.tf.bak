@@ -1,0 +1,5 @@
+resource "opc_compute_instance" "instance1" {
+  name = "example-instance1"
+  shape = "oc3"
+  image_list = "/oracle/public/OL_7.2_UEKR3_x86_64"
+}
