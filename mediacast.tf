@@ -35,7 +35,7 @@ resource "oci_core_instance" "instance1" {
         subnet_id = "${var.subnet_id2}"
 
         display_name = "instance1"
-        image = "ocid1.image.oc1.iad.aaaaaaaadukpek2y3x6ekmfmjtc63etyjdd4asqpath23q6tk2gorofeeoqa"
+        image = "${var.image}"
         shape = "VM.Standard1.1"
 
         metadata = {
