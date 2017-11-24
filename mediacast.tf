@@ -22,8 +22,9 @@ variable "backendset_name"  { default = "mediacast_backend"}
 variable "availability_domain1" { default = "cCgE:US-ASHBURN-AD-1" }
 variable "availability_domain2" { default = "cCgE:US-ASHBURN-AD-2" }
 variable "availability_domain3" { default = "cCgE:US-ASHBURN-AD-3" }
-variable "ssh_public_key" { default = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCJ50jGhg3ST00H/GfY9bFfarckMPtZRoWScYaca7LI02HHV55msC5YT/JzBjyEY6RoEblzvhCEcrbuVqsWrQlMJ8ZAoing5bAwStMgB9RphlCQ7562it9GVjrrqPv3qpkMscBw8QRpboClsa6zK4vaQvLYj30Bpl7ZdqgU/zxKsiuRzV8K0k1tF1K+NnfmJx0ccezOvHb+3RTxPjWbRQ46ZZ16K0aWidrChF/IweCrd963VjI4MGkw0lfov1q9h4N9ESwv20GAwf7dGIRDEdjHVhzVBa1Ga/ge9a5aN8oIj3YyAb7gdcqKk2TwcGHup4uH+VYTOl8/5pOZM7eoiz2H" }
+variable "ssh_public_key"       { default = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCJ50jGhg3ST00H/GfY9bFfarckMPtZRoWScYaca7LI02HHV55msC5YT/JzBjyEY6RoEblzvhCEcrbuVqsWrQlMJ8ZAoing5bAwStMgB9RphlCQ7562it9GVjrrqPv3qpkMscBw8QRpboClsa6zK4vaQvLYj30Bpl7ZdqgU/zxKsiuRzV8K0k1tF1K+NnfmJx0ccezOvHb+3RTxPjWbRQ46ZZ16K0aWidrChF/IweCrd963VjI4MGkw0lfov1q9h4N9ESwv20GAwf7dGIRDEdjHVhzVBa1Ga/ge9a5aN8oIj3YyAb7gdcqKk2TwcGHup4uH+VYTOl8/5pOZM7eoiz2H" }
 
+variable "image" {default = "ocid1.image.oc1.iad.aaaaaaaac4oxvscuihv6e56i5572htriehxelfsm3bfqqzptpvelptbmj4sq"}
 
 
 /* add instances */
