@@ -31,8 +31,8 @@ variable "image" {default = "ocid1.image.oc1.iad.aaaaaaaac4oxvscuihv6e56i5572htr
 resource "oci_core_instance" "instance1" {
 
         compartment_id = "${var.compartment_ocid}"
-        availability_domain = "${var.availability_domain2}"
-        subnet_id = "${var.subnet_id2}"
+        availability_domain = "${var.availability_domain1}"
+        subnet_id = "${var.subnet_id1}"
 
         display_name = "instance1"
         image = "${var.image}"
