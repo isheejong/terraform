@@ -26,13 +26,13 @@ variable "image" {default = "ocid1.image.oc1.iad.aaaaaaaac4oxvscuihv6e56i5572htr
 
 
 /* add instances */
-resource "oci_core_instance" "instance1" {
+resource "oci_core_instance" "ad2-instance-1" {
 
         compartment_id = "${var.compartment_ocid}"
         availability_domain = "${var.availability_domain}"
         subnet_id = "${var.subnet_id1}"
 
-        display_name = "instance1"
+        display_name = "ad2-instance-1"
         image = "${var.image}"
         shape = "VM.Standard1.1"
 
@@ -48,7 +48,7 @@ resource "oci_core_instance" "instance1" {
 resource "oci_load_balancer_backend" "lb-be1"  {
   load_balancer_id = "${var.load_balancer_id}"
   backendset_name  = "${var.backendset_name}"
-  ip_address       = "${oci_core_instance.instance1.private_ip}"
+  ip_address       = "${oci_core_instance.ad2-instance-1.private_ip}"
   port             = 8080
   backup           = false
   drain            = false
