@@ -12,9 +12,7 @@ provider "oci" {
 
 /* variables */
 variable "compartment_ocid"  { default = "ocid1.compartment.oc1..aaaaaaaan2ba3eaknmc7tm7bu4j2ux7gencnxqfjf7ai4w4ognqgihmiragq" }
-variable "subnet_id1" { default = "ocid1.subnet.oc1.iad.aaaaaaaa2igi5jtm66kthra2r22xckxsa3n7fvv3hk2wjbgkrmdazitkz7ia" }
-variable "subnet_id2" { default = "ocid1.subnet.oc1.iad.aaaaaaaalpf5plxekn7bkk25qus2r44ly4oinosr2hyehoktat2fd5eg6y6q" }
-variable "subnet_id3" { default = "ocid1.subnet.oc1.iad.aaaaaaaac4k7rgqzo27njsbz4zoswecu2nvzxc42xy2tiqr56qdwveogsioa" }
+variable "subnet_id" { default = "ocid1.subnet.oc1.iad.aaaaaaaalpf5plxekn7bkk25qus2r44ly4oinosr2hyehoktat2fd5eg6y6q" }
 
 variable "load_balancer_id" { default = "ocid1.loadbalancer.oc1.iad.aaaaaaaa2vz32elxiz3ae4b52klpcavrvmov4x5f5jy4qz5iscmndrx462ta" }
 variable "backendset_name"  { default = "mediacast_backend"}
@@ -26,13 +24,13 @@ variable "image" {default = "ocid1.image.oc1.iad.aaaaaaaac4oxvscuihv6e56i5572htr
 
 
 /* add instances */
-resource "oci_core_instance" "instance1" {
+resource "oci_core_instance" "ad1-instance-1" {
 
         compartment_id = "${var.compartment_ocid}"
         availability_domain = "${var.availability_domain}"
-        subnet_id = "${var.subnet_id1}"
+        subnet_id = "${var.subnet_id}"
 
-        display_name = "instance1"
+        display_name = "ad1-instance-1"
         image = "${var.image}"
         shape = "VM.Standard1.1"
 
@@ -48,7 +46,7 @@ resource "oci_core_instance" "instance1" {
 resource "oci_load_balancer_backend" "lb-be1"  {
   load_balancer_id = "${var.load_balancer_id}"
   backendset_name  = "${var.backendset_name}"
-  ip_address       = "${oci_core_instance.instance1.private_ip}"
+  ip_address       = "${oci_core_instance.ad1-instance-1.private_ip}"
   port             = 8080
   backup           = false
   drain            = false
