@@ -56,7 +56,7 @@ def autoscale(adname, subnet, prefix, count):
     proc = subprocess.Popen('terraform apply -auto-approve', shell=True,
                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
-    gethering from stdout about terrform
+    #loggin from stdout about terrform
     result = ''
     for line in proc.stdout.readlines():
         result += line.decode('utf-8')
