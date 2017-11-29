@@ -1,0 +1,15 @@
+/* add instances */
+resource "oci_core_instance" "#{name}" {
+
+        compartment_id = "${var.compartment_ocid}"
+        availability_domain = "${var.#{adname}}"
+        subnet_id = "${var.#{subnet}_ocid}"
+
+        display_name = "#{name}"
+        image = "${var.image_ocid}"
+        shape = "VM.Standard1.1"
+
+        metadata = {
+                ssh_authorized_keys = "${var.ssh_public_key}"
+        }
+}

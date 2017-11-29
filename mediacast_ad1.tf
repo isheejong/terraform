@@ -12,7 +12,7 @@ provider "oci" {
 
 /* variables */
 variable "compartment_ocid"  { default = "ocid1.compartment.oc1..aaaaaaaan2ba3eaknmc7tm7bu4j2ux7gencnxqfjf7ai4w4ognqgihmiragq" }
-variable "subnet_id" { default = "ocid1.subnet.oc1.iad.aaaaaaaa2igi5jtm66kthra2r22xckxsa3n7fvv3hk2wjbgkrmdazitkz7ia" }
+variable "subnet_id1" { default = "ocid1.subnet.oc1.iad.aaaaaaaa2igi5jtm66kthra2r22xckxsa3n7fvv3hk2wjbgkrmdazitkz7ia" }
 
 variable "load_balancer_id" { default = "ocid1.loadbalancer.oc1.iad.aaaaaaaa2vz32elxiz3ae4b52klpcavrvmov4x5f5jy4qz5iscmndrx462ta" }
 variable "backendset_name"  { default = "mediacast_backend"}
@@ -39,6 +39,7 @@ resource "oci_core_instance" "ad1-instance-1" {
         }
 }
 
+#END INSTANCE
 
 
 /* add backend set about above new instance*/
@@ -53,3 +54,5 @@ resource "oci_load_balancer_backend" "lb-be1"  {
   offline          = false
   weight           = 1
 }
+
+#END BACKEND
