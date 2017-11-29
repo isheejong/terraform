@@ -41,31 +41,29 @@ def autoscale(adname, subnet, prefix, count):
             backend += line
 
     intances = ''
-    backeds  = ''
+    backends  = ''
     for index in range (1, count):
         # replace the intance name each by scale out for count
         intances += instance.replace('#{name}', prefix + '-' + str(index)).replace('#{adname}', adname ).replace('#{subnet}', subnet )
-        backeds  += backend.replace ('#{name}', prefix + '-' + str(index))
+        backends += backend.replace ('#{name}', prefix + '-' + str(index))
 
 
     # create the tf file for applying the cloud for tf
     with open('oci.tf', 'w') as wfile:
-        wfile.write(header + intances + backeds)
+        wfile.write(header + intances + backends)
 
     # execute tf command
-    # proc = subprocess.Popen('terraform apply -auto-approve', shell=True,
-                        # stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    proc = subprocess.Popen('terraform apply -auto-approve', shell=True,
+                        stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
-    # gethering from stdout about terrform
-    # result = ''
-    # for line in proc.stdout.readlines():
-    #     result += line.decode('utf-8')
-    # logging.info(result)
+    gethering from stdout about terrform
+    result = ''
+    for line in proc.stdout.readlines():
+        result += line.decode('utf-8')
+    logging.info(result)
 
 # watching avg cpu usage and scale ou or in
 def run(adname, subnet, prefix):
-    status = 'NORMAL'
-
     #
     #
     # configurations for autoscaling
@@ -83,6 +81,7 @@ def run(adname, subnet, prefix):
     sumOfCpuPer = 0
     currAvgOfCpuPer = 0
     prevAvgOfCpuPer = 0
+
     while True :
         sumOfCpuPer +=  psutil.cpu_percent()
 
@@ -98,7 +97,6 @@ def run(adname, subnet, prefix):
                             ' | avg cpu usage : '     + str(currAvgOfCpuPer) + " greater than " + str(sacleOutCondi) )
             # logging.info(' > current scale : ' + str(scale) +
             #                 ' | avg cpu usage : '     + str(currAvgOfCpuPer) + " greater than " + str(sacleOutCondi)  + " and sacle out")
-            status = 'SCALE_OUT'
             scale += 1
 
             autoscale(adname, subnet, prefix, scale)
@@ -114,7 +112,6 @@ def run(adname, subnet, prefix):
             print(' > current scale : ' + str(scale) +
                             ' | avg cpu usage : '    + str(currAvgOfCpuPer) + " less than " + str(scaleInCondi))
 
-            status = 'SCALE_IN'
             scale -= 1
             autoscale(adname, subnet, prefix, scale)
 
@@ -123,8 +120,6 @@ def run(adname, subnet, prefix):
             # logging.info(' > current scale : ' + str(scale) +
             #                 ' | avg cpu usage : '    + str(currAvgOfCpuPer) + " complete scale in")
 
-        else:
-            status = 'NORMAL'
 
         count += 1
         time.sleep(1) # per sec
@@ -147,10 +142,12 @@ def main():
 
     if( adname not in (adnames) ):
         print(' ERROR > please input the correct availability_domain')
+        print(' \t ex) availability_domain1, availability_domain2, availability_domain3')
         return
 
     elif( subnet not in (subnets) ):
         print(' ERROR > please input the correct subnet')
+        print(' \t ex) subnet1 or subnet2 or subnet3')
         return
 
     else:
