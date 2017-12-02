@@ -19,24 +19,25 @@ logging.basicConfig(level=logging.DEBUG,
                     filename='myapp.log',
                     filemode='w')
 
+templateDir = '/home/mcuser/tfworks/terraform/'
 # create tf file and apply
 def autoscale(adname, subnet, prefix, count):
 
     # read header file about provider and variable
     header = ''
-    with open('header.txt', 'r') as hfile:
+    with open(templateDir + 'header.txt', 'r') as hfile:
         for line in hfile.readlines():
             header += line
 
     # read instance template to create oci instance
     instance = ''
-    with open('instance.txt', 'r') as ifile:
+    with open(templateDir + 'instance.txt', 'r') as ifile:
         for line in ifile.readlines():
             instance += line
 
     # read backend template to create backed set
     backend = ''
-    with open('backend.txt', 'r') as bfile:
+    with open(templateDir + 'backend.txt', 'r') as bfile:
         for line in bfile.readlines():
             backend += line
 
@@ -49,18 +50,19 @@ def autoscale(adname, subnet, prefix, count):
 
 
     # create the tf file for applying the cloud for tf
-    with open('oci.tf', 'w') as wfile:
+    with open('/home/mcuser/oci.tf', 'w') as wfile:
         wfile.write(header + intances + backends)
 
     # execute tf command
     proc = subprocess.Popen('terraform apply -auto-approve', shell=True,
                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
+    proc.wait()
     #loggin from stdout about terrform
     result = ''
     for line in proc.stdout.readlines():
         result += line.decode('utf-8')
-    logging.info(result)
+    print(result)
 
 # watching avg cpu usage and scale ou or in
 def run(adname, subnet, prefix):
@@ -73,8 +75,8 @@ def run(adname, subnet, prefix):
     duration = 5   # duration for avg
     maxScaleOut = 5   # max scale out size
     minScaleIn  = 0   # min scale in size
-    scaleInCondi  = 40  # cpu usage per for scale out
-    sacleOutCondi = 60  # cpu usage per for scale in
+    scaleInCondi  = 20  # cpu usage per for scale out
+    sacleOutCondi = 40  # cpu usage per for scale in
     #
     #
     #
@@ -96,7 +98,7 @@ def run(adname, subnet, prefix):
 
         if  count == 0 and currAvgOfCpuPer > sacleOutCondi and scale <= maxScaleOut :
             print(' > current scale : ' + str(scale) +
-                            ' | avg cpu usage : '     + str(currAvgOfCpuPer) + " greater than " + str(sacleOutCondi) )
+                            ' | avg cpu usage : '     + str(currAvgOfCpuPer) + " greater than " + str(sacleOutCondi) 
             # logging.info(' > current scale : ' + str(scale) +
             #                 ' | avg cpu usage : '     + str(currAvgOfCpuPer) + " greater than " + str(sacleOutCondi)  + " and sacle out")
             scale += 1

@@ -1,7 +1,7 @@
 resource "oci_load_balancer_backend" "lb-be1"  {
   load_balancer_id = "${var.load_balancer_ocid}"
   backendset_name  = "${var.backendset_name}"
-  ip_address       = "${oci_core_instance.#{name}_ocid.private_ip}"
+  ip_address       = "${oci_core_instance.#{name}.private_ip}"
   port             = 8080
   backup           = false
   drain            = false
