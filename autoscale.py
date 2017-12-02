@@ -64,6 +64,8 @@ def autoscale(adname, subnet, prefix, count):
 
 # watching avg cpu usage and scale ou or in
 def run(adname, subnet, prefix):
+
+    
     #
     #
     # configurations for autoscaling
