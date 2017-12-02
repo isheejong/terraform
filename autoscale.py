@@ -46,6 +46,10 @@ def loadTemplate(templateDir):
         for line in bfile.readlines():
             backend += line
 
+    print (header)
+    print (instance)
+    print (backend)
+
 # create tf file and apply
 def adjustscale(adname, subnet, prefix, count):
 
