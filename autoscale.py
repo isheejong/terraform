@@ -36,21 +36,21 @@ def loadTemplate(templateDir):
     with open(templateDir + 'header.txt', 'r') as hfile:
         for line in hfile.readlines():
             header += line
-    except:
+    except (FileNotFoundError, IOError):
         print(' ERROR > ' + 'can't read the header.txt ')
 
     # read instance template to create oci instance
     with open(templateDir + 'instance.txt', 'r') as ifile:
         for line in ifile.readlines():
             instance += line
-    except:
+    except (FileNotFoundError, IOError):
         print(' ERROR > ' + 'can't read the instance.txt ')
 
     # read backend template to create backed set
     with open(templateDir + 'backend.txt', 'r') as bfile:
         for line in bfile.readlines():
             backend += line
-    except:
+    except (FileNotFoundError, IOError):
         print(' ERROR > ' + 'can't read the backend.txt ')
 
 
