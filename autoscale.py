@@ -109,10 +109,8 @@ def run(adname, subnet, prefix):
 
         if  count == 0 and currAvgOfCpuPer > sacleOutCondi and scale <= maxScaleOut :
             print(' > current scale : ' + str(scale) +
-                            ' | avg cpu usage : '     + str(currAvgOfCpuPer) + " greater than " + str(sacleOutCondi)
-            print(' > try to scale out to ' + scale)
-            # logging.info(' > current scale : ' + str(scale) +
-            #                 ' | avg cpu usage : '     + str(currAvgOfCpuPer) + " greater than " + str(sacleOutCondi)  + " and sacle out")
+                    ' | avg cpu usage : '     + str(currAvgOfCpuPer) + " greater than " + str(sacleOutCondi)
+
             scale += 1
 
             adjustscale(adname, subnet, prefix, scale)
