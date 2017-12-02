@@ -56,10 +56,10 @@ def adjustscale(adname, subnet, prefix, count):
 
     intances = ''
     backends  = ''
-    for index in range (1, count):
+    for index in range (0, count):
         # replace the intance name each by scale out for count
-        intances += instance.replace('#{name}', prefix + '-' + str(index)).replace('#{adname}', adname ).replace('#{subnet}', subnet )
-        backends += backend.replace ('#{name}', prefix + '-' + str(index))
+        intances += instance.replace('#{name}', prefix + '-' + str(index + 1)).replace('#{adname}', adname ).replace('#{subnet}', subnet )
+        backends += backend.replace ('#{name}', prefix + '-' + str(index + 1))
 
     # create the tf file for applying the cloud for tf
     with open('/home/mcuser/oci.tf', 'w') as wfile:
