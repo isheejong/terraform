@@ -36,16 +36,23 @@ def loadTemplate(templateDir):
     with open(templateDir + 'header.txt', 'r') as hfile:
         for line in hfile.readlines():
             header += line
+    except:
+        print(' ERROR > ' + 'can't read the header.txt ')
 
     # read instance template to create oci instance
     with open(templateDir + 'instance.txt', 'r') as ifile:
         for line in ifile.readlines():
             instance += line
+    except:
+        print(' ERROR > ' + 'can't read the instance.txt ')
 
     # read backend template to create backed set
     with open(templateDir + 'backend.txt', 'r') as bfile:
         for line in bfile.readlines():
             backend += line
+    except:
+        print(' ERROR > ' + 'can't read the backend.txt ')
+
 
 
 # create tf file and apply
@@ -80,9 +87,6 @@ def adjustscale(adname, subnet, prefix, count):
 # watching avg cpu usage and scale ou or in
 def run(adname, subnet, prefix):
 
-    templateDir = '/home/mcuser/tfworks/terraform/'
-    loadTemplate(templateDir)
-
     # ======================================================================
     # TODO : must be adjust the value of configurations for you env
     # configurations for autoscaling
@@ -93,6 +97,7 @@ def run(adname, subnet, prefix):
     minScaleIn  = 0   # min scale in size
     scaleInCondi  = 20  # cpu usage per for scale out
     sacleOutCondi = 40  # cpu usage per for scale in
+    templateDir = '/home/mcuser/tfworks/terraform/'
     #
     #
     # ======================================================================
@@ -101,6 +106,8 @@ def run(adname, subnet, prefix):
     sumOfCpuPer = 0
     currAvgOfCpuPer = 0
     prevAvgOfCpuPer = 0
+
+    loadTemplate(templateDir)
 
     while True :
         sumOfCpuPer +=  psutil.cpu_percent()
