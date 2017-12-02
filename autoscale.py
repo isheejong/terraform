@@ -29,29 +29,30 @@ backend  = ''
 def loadTemplate(templateDir):
 
     # read header file about provider and variable
-    header = ''
+    global header
+    global instance
+    global backend
+
     with open(templateDir + 'header.txt', 'r') as hfile:
         for line in hfile.readlines():
             header += line
 
     # read instance template to create oci instance
-    instance = ''
     with open(templateDir + 'instance.txt', 'r') as ifile:
         for line in ifile.readlines():
             instance += line
 
     # read backend template to create backed set
-    backend = ''
     with open(templateDir + 'backend.txt', 'r') as bfile:
         for line in bfile.readlines():
             backend += line
 
-    print (header)
-    print (instance)
-    print (backend)
 
 # create tf file and apply
 def adjustscale(adname, subnet, prefix, count):
+    global header
+    global instance
+    global backend
 
     intances = ''
     backends  = ''
@@ -112,6 +113,7 @@ def run(adname, subnet, prefix):
                             ' | avg cpu usage : '    + str(currAvgOfCpuPer) )
 
         if  count == 0 and currAvgOfCpuPer > sacleOutCondi and scale <= maxScaleOut :
+            print (' > try to scale out to ' + scale )
             scale += 1
             adjustscale(adname, subnet, prefix, scale)
             print(' > current scale : ' + str(scale) +
