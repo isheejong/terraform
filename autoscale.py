@@ -14,6 +14,9 @@ from logging.handlers import TimedRotatingFileHandler
 
 # handler = TimedRotatingFileHandler('c:/Dev/terraform/', when="m", interval=1, backupCount=5)
 # logging.addHandler(handler)
+# logging.info(' > current scale : ' + str(scale) +
+                # ' | cpu usage : '    + str(currAvgOfCpuPer) + " less than " + str(scaleInCondi)  + " and scale in")
+
 logging.basicConfig(level=logging.DEBUG,
                     format='[%(asctime)s] | %(levelname)s |  %(message)s',
                     filename='myapp.log',
@@ -49,7 +52,7 @@ def loadTemplate(templateDir):
 
 
 # create tf file and apply
-def adjustscale(adname, subnet, prefix, count):
+def adjustscale(adname, subnet, prefix, count, tfHomeDir):
     global header
     global instance
     global backend
@@ -57,12 +60,12 @@ def adjustscale(adname, subnet, prefix, count):
     intances = ''
     backends  = ''
     for index in range (0, count):
-        # replace the intance name each by scale out for count
+        # replace the intance name each by index
         intances += instance.replace('#{name}', prefix + '-' + str(index + 1)).replace('#{adname}', adname ).replace('#{subnet}', subnet )
         backends += backend.replace ('#{name}', prefix + '-' + str(index + 1))
 
     # create the tf file for applying the cloud for tf
-    with open('/home/mcuser/oci.tf', 'w') as wfile:
+    with open(tfHomeDir + 'oci.tf', 'w') as wfile:
         wfile.write(header + intances + backends)
 
     # execute tf command
@@ -71,7 +74,7 @@ def adjustscale(adname, subnet, prefix, count):
 
     # wait for terraform process until it will be done
     proc.wait()
-    #loggin from stdout about terrform
+
     result = ''
     for line in proc.stdout.readlines():
         result += line.decode('utf-8')
@@ -84,13 +87,14 @@ def run(adname, subnet, prefix):
     # TODO : must be adjust the value of configurations for you env
     # configurations for autoscaling
     #
-    scale    = 0   # current scale
-    duration = 5   # duration for avg
-    maxScaleOut = 5   # max scale out size
-    minScaleIn  = 0   # min scale in size
+    scale    = 0        # current scale
+    duration = 5        # duration for avg
+    maxScaleOut = 5     # max scale out size
+    minScaleIn  = 0     # min scale in size
     scaleInCondi  = 20  # cpu usage per for scale out
     sacleOutCondi = 40  # cpu usage per for scale in
     templateDir = '/home/mcuser/tfworks/terraform/'
+    tfHoemDir   = '/home/mcuser/'
     #
     #
     # ======================================================================
@@ -105,7 +109,7 @@ def run(adname, subnet, prefix):
     while True :
         sumOfCpuPer +=  psutil.cpu_percent()
 
-        if ( count == duration ):
+        if count == duration :
             currAvgOfCpuPer = round(sumOfCpuPer / duration, 2)
             count = 0
             sumOfCpuPer = 0
@@ -113,32 +117,18 @@ def run(adname, subnet, prefix):
                             ' | avg cpu usage : '    + str(currAvgOfCpuPer) )
 
         if  count == 0 and currAvgOfCpuPer > sacleOutCondi and scale <= maxScaleOut :
+            print (' > try to scale out to ' + str(scale) ' from ' + str(scale - 1) + ' in ' + adname )
             scale += 1
-            print (' > try to scale out to ' + str(scale) )
-
-            adjustscale(adname, subnet, prefix, scale)
-
+            adjustscale(adname, subnet, prefix, scale, tfHoemDir)
             time.sleep(10)
-            print(' > current scale : ' + str(scale) +
-                            ' | avg cpu usage : '    + str(currAvgOfCpuPer) + " complete scale out")
-
-            # logging.info(' > current scale : ' + str(scale) +
-            #                 ' | avg cpu usage : '    + str(currAvgOfCpuPer) + " complete scale out")
+            print(' > current scale : ' + str(scale) + ' | avg cpu usage : ' + str(currAvgOfCpuPer) + " complete scale out")
 
         elif count == 0 and currAvgOfCpuPer < scaleInCondi and scale > minScaleIn :
-            # logging.info(' > current scale : ' + str(scale) +
-                            # ' | cpu usage : '    + str(currAvgOfCpuPer) + " less than " + str(scaleInCondi)  + " and scale in")
-            print(' > current scale : ' + str(scale) +
-                            ' | avg cpu usage : '    + str(currAvgOfCpuPer) + " less than " + str(scaleInCondi))
-
+            print(' > current scale : ' + str(scale) + ' | avg cpu usage : ' + str(currAvgOfCpuPer) + " less than " + str(scaleInCondi))
             scale -= 1
-            adjustscale(adname, subnet, prefix, scale)
-
-            print(' > current scale : ' + str(scale) +
-                            ' | avg cpu usage : '    + str(currAvgOfCpuPer) + " complete scale in")
-            # logging.info(' > current scale : ' + str(scale) +
-            #                 ' | avg cpu usage : '    + str(currAvgOfCpuPer) + " complete scale in")
-
+            print (' > try to scale in to ' + str(scale) ' from ' + str(scale + 1) + ' in ' + adname )
+            adjustscale(adname, subnet, prefix, scale, tfHoemDir)
+            print(' > current scale : ' + str(scale) + ' | avg cpu usage : '    + str(currAvgOfCpuPer) + " complete scale in")
 
         count += 1
         time.sleep(1) # per sec
