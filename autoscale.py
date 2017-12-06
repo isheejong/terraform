@@ -117,18 +117,18 @@ def run(adname, subnet, prefix):
                             ' | avg cpu usage : '    + str(currAvgOfCpuPer) )
 
         if  count == 0 and currAvgOfCpuPer > sacleOutCondi and scale <= maxScaleOut :
-            print (' > try to scale out to ' + str(scale) + ' from ' + str(scale - 1) + ' in ' + adname )
+            print (' > try to scale out to ' + str(scale) + ' from ' + str(scale + 1) + ' in ' + adname )
             scale += 1
             adjustscale(adname, subnet, prefix, scale, tfHoemDir)
             time.sleep(10)
-            print(' > current scale : ' + str(scale) + ' | avg cpu usage : ' + str(currAvgOfCpuPer) + " complete scale out")
+            print(' > current scale : ' + str(scale) + ' | avg cpu usage : ' + str(currAvgOfCpuPer) + " completed the scale out")
 
         elif count == 0 and currAvgOfCpuPer < scaleInCondi and scale > minScaleIn :
-            print(' > current scale : ' + str(scale) + ' | avg cpu usage : ' + str(currAvgOfCpuPer) + " less than " + str(scaleInCondi))
+            print (' > try to scale in to ' + str(scale) + ' from ' + str(scale - 1) + ' in ' + adname )
             scale -= 1
-            print (' > try to scale in to ' + str(scale) + ' from ' + str(scale + 1) + ' in ' + adname )
             adjustscale(adname, subnet, prefix, scale, tfHoemDir)
-            print(' > current scale : ' + str(scale) + ' | avg cpu usage : '    + str(currAvgOfCpuPer) + " complete scale in")
+            time.sleep(10)
+            print(' > current scale : ' + str(scale) + ' | avg cpu usage : '    + str(currAvgOfCpuPer) + " completed the scale in")
 
         count += 1
         time.sleep(1) # per sec
