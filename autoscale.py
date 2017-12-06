@@ -117,7 +117,7 @@ def run(adname, subnet, prefix):
                             ' | avg cpu usage : '    + str(currAvgOfCpuPer) )
 
         if  count == 0 and currAvgOfCpuPer > sacleOutCondi and scale <= maxScaleOut :
-            print (' > try to scale out to ' + str(scale) ' from ' + str(scale - 1) + ' in ' + adname )
+            print (' > try to scale out to ' + str(scale) + ' from ' + str(scale - 1) + ' in ' + adname )
             scale += 1
             adjustscale(adname, subnet, prefix, scale, tfHoemDir)
             time.sleep(10)
