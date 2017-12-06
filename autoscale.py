@@ -126,7 +126,7 @@ def run(adname, subnet, prefix):
         elif count == 0 and currAvgOfCpuPer < scaleInCondi and scale > minScaleIn :
             print(' > current scale : ' + str(scale) + ' | avg cpu usage : ' + str(currAvgOfCpuPer) + " less than " + str(scaleInCondi))
             scale -= 1
-            print (' > try to scale in to ' + str(scale) ' from ' + str(scale + 1) + ' in ' + adname )
+            print (' > try to scale in to ' + str(scale) + ' from ' + str(scale + 1) + ' in ' + adname )
             adjustscale(adname, subnet, prefix, scale, tfHoemDir)
             print(' > current scale : ' + str(scale) + ' | avg cpu usage : '    + str(currAvgOfCpuPer) + " complete scale in")
 
